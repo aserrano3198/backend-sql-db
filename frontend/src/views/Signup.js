@@ -24,7 +24,7 @@ export function Signup(props) {
       })
 
    }
-
+  
     return (
         <View style={styles.container}>
             <View style={styles.header}>

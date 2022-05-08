@@ -24,9 +24,9 @@ export function Login(props) {
 
              }
             
-          }
+          } 
          
-          )
+          )  
           .catch(error=>{
             alert("Usuario no encontrado")
             props.navigation.navigate("Home")
