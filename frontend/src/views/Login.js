@@ -5,25 +5,32 @@ import { View, Text, TextInput, StyleSheet, TouchableHighlight, Image } from 're
 
 
 export function Login(props) {
-    const [email, setEmail] = useState("");
+    const [nombre, setNombre] = useState("");
     const [password, setPassword] = useState("");
     const[isadmin, setisadmin] =useState(false);
     const[shown, setShown] = useState(false);
+    
 
     function Submit (){
         
-        axios.post('http://192.168.43.12:8080/api/auth/signin', {username: email,
+        axios.post('http://192.168.1.127:8080/api/auth/signin', {username: nombre,
         password: password})
         .then(res => {  
+            props.navigation.navigate("Map")
              
-         if(res.data.roles==admin){
-             setisadmin(true);
-         }props.navigation.navigate("Map")
+             if(res.data.roles[0]== "ROLE_ADMIN"){
+                setisadmin(true)
+                props.navigation.navigate("Map")
+
+             }
+            
           }
          
           )
           .catch(error=>{
-            alert("Error server "+error)
+            alert("Usuario no encontrado")
+            props.navigation.navigate("Home")
+
           })
     }
 
@@ -43,20 +50,16 @@ export function Login(props) {
             <TextInput
                 style={styles.input}
                 placeholder="Username..."
-                value={email}
-                onChangeText={(text) => setEmail(text)}
+                value={nombre}
+                onChangeText={(text) => setNombre(text)}
             />
             <TextInput
                 style={styles.input}
                 placeholder="Contraseña..."
-                onChange={onChange}
-                type={shown ? 'text' : 'password'}
                 value={password}
-                onChangeText={(text) =>{ setPassword(text); onChange}}
+                onChangeText={(text) =>{ setPassword(text);}}
             />
-            <TouchableHighlight onClick={switchShown}>
-             {shown ? 'Ocultar' : 'Mostrar'}
-            </TouchableHighlight>
+
             <TouchableHighlight style={styles.button} onPress={() => Submit()}>
                 <Text style={styles.textButton}>Log in</Text>
             </TouchableHighlight>

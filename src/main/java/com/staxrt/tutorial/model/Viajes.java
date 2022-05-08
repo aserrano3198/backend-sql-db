@@ -18,59 +18,59 @@
  *
  */
 
-package com.staxrt.tutorial.model;
+// package com.staxrt.tutorial.model;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+// import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
+// import javax.persistence.*;
+// import java.sql.Timestamp;
 
-/**
- * The type Viajes.
- *
- * @author Givantha Kalansuriya
- */
-@Entity
-@Table(name = "viajes")
-@EntityListeners(AuditingEntityListener.class)
-public class Viajes {
+// /**
+//  * The type Viajes.
+//  *
+//  * @author Givantha Kalansuriya
+//  */
+// @Entity
+// @Table(name = "viajes")
+// @EntityListeners(AuditingEntityListener.class)
+// public class Viajes {
 
-    @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_viaje;
+//     @Id
+// 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private long id_viaje;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
+//     @ManyToOne
+//     @JoinColumn(name="user_id")
+//     private User user;
 
-    @Column(name = "fecha", nullable = false)
-    private Timestamp fecha;
+//     @Column(name = "fecha", nullable = false)
+//     private Timestamp fecha;
 
-    @Column(name = "tiempo", nullable = false)
-    private long tiempo;
+//     @Column(name = "tiempo", nullable = false)
+//     private long tiempo;
 
-    @Column(name = "longitudinicio", nullable = false)
-    private long longitudinicio;
+//     @Column(name = "longitudinicio", nullable = false)
+//     private long longitudinicio;
 
-    @Column(name = "latitudinicio", nullable = false)
-    private long latitudinicio;
+//     @Column(name = "latitudinicio", nullable = false)
+//     private long latitudinicio;
 
-    @Column(name = "longitudfinal", nullable = false)
-    private long longitudfinal;
+//     @Column(name = "longitudfinal", nullable = false)
+//     private long longitudfinal;
 
-    @Column(name = "latitudfinal", nullable = false)
-    private long latitudfinal;
+//     @Column(name = "latitudfinal", nullable = false)
+//     private long latitudfinal;
 
 
-    public Viajes() {
+//     public Viajes() {
 
-    }
+//     }
     
-    //implementar getters y setters
+//     //implementar getters y setters
 
-}
+// }
 
-/* use users_database;
-SHOW TABLES;
-SELECT * FROM users;
-*/
+// /* use users_database;
+// SHOW TABLES;
+// SELECT * FROM users;
+// */
