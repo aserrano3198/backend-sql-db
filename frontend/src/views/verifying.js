@@ -27,21 +27,36 @@ export function verifying({ navigation, route }) {
     const addSaldo = async () => {
         try {
             // cambiar veh a mal aparcado
-            const res = await axios.post("http://172.20.10.2:8080/api/v1/vehiculos/" + vehId);
-            // obtener saldo
-            axios.get("http:172.20.10.2:8080/api/v2/user/saldo/" + userId)
-                .then(ans => setSaldos(ans.data.saldo + 1))
-                .catch(error => { alert("Ha habido un error " + error + " al hacer el get al saldo") })
-            axios.put("http://172.20.10.2:8080/api/v2/user/saldo/" + userId + "/" + saldos)
-                .then("conseguido")
-                .catch(error => { alert("Ha habido un error " + error + " al hacer el put al saldo") })
-
-            if (res.status === 200) {
-                Alert.alert('Foto verificada', ' ', [
-                    { text: 'Ok', onPress: () => navigation.navigate("Admin") }
-                ])
+            try {
+                console.log("vehiculo es: "+vehId);
+                const res = await axios.post("http://172.20.10.2:8080/api/v1/vehiculos/" + vehId);
+                if (res.status === 200) {
+                    console.log("vehiculo cambiado a mal aparcado")
+                }
+            } catch (error) {
+                console.log("error al cambiar a mal aparcado ", error);
             }
 
+            // obtener saldo
+            try {
+                const res = await axios.get("http://172.20.10.2:8080/api/v2/user/" + userId);
+                if (res.status === 200) {
+                    console.log("saldo conseguido");
+                    var saldo = res.data.saldo + 1;
+                    console.log("saldo es: ", saldo);
+                    try {
+                        const res2 = await axios.put("http://172.20.10.2:8080/api/v2/user/saldo/" + userId + "/" + saldo);
+                        if (res2.status === 200) {
+                            console.log("saldo metido al user");
+                        }
+                    } catch (error) {
+                        console.log("Ha habido un error " + error + " al hacer el put al saldo")
+                    }
+                }
+            } catch (error) {
+                alert("Ha habido un error " + error + " al hacer el get al saldo");
+            }
+            deleteFoto();
         } catch (error) {
             console.log("error ", error);
         }
@@ -62,12 +77,12 @@ export function verifying({ navigation, route }) {
                     <TouchableHighlight style={styles.button} onPress={() => deleteFoto()}>
                         <Text style={styles.textButton}>Sí</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight style={styles.button} onPress={() => { deleteFoto(); addSaldo(); }}>
+                    <TouchableHighlight style={styles.button} onPress={() => { deleteFoto(); }}>
                         <Text style={styles.textButton}>No</Text>
                     </TouchableHighlight>
                 </View>
             </View>
-        </View>
+        </View >
     );
 };
 

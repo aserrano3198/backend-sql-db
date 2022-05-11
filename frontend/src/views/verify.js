@@ -24,7 +24,7 @@ export function verify({navigation, route}) {
     const getPic = (im, id, userId, vehId) => {
         var pic = im.slice(11,-2);
         // console.log(pic);
-        navigation.navigate("verifying", {pic:pic, id:id, userId, vehId})
+        navigation.navigate("verifying", {pic:pic, id:id, userId: userId, vehId: vehId})
     }
 
     if (loading) return (

@@ -13,11 +13,11 @@ export function EditUser({navigation, route}) {
     function Cambiar(){
       axios.put("http://172.20.10.2:8080/api/v2/user/" +user_id+ "/"+nombre)
       .then(
-          alert("User modificado")
+          alert("User modificado"),
+          navigation.navigate("Map", {isAdmin: false, id: user_id})   
         )
         .catch(error =>{
-            alert("Error" +error),
-            navigation.navigate("Map")   
+            alert("Error" +error)
         })}
 
     function Borrar(){

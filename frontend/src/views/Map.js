@@ -4,12 +4,13 @@ import axios from 'axios';
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['expo-permissions is now deprecated']);
 LogBox.ignoreLogs(['Failed prop type']);
+LogBox.ignoreLogs(['Each child in a list should have a unique']);
 
 import { View, Text, TextInput, TouchableHighlight, Image, Alert } from 'react-native';
 
 // Mapa google maps
 import { StyleSheet, Dimensions } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Polygon } from 'react-native-maps';
 import { mapStyle } from './mapStyle';
 import { default as Bici } from '../assets/vmps/BiciDisp.png';
 import { default as BiciNo } from '../assets/vmps/BiciNoDisp.png';
@@ -20,6 +21,9 @@ import { default as PatineteNo } from '../assets/vmps/patineteNoDisp.png';
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
 
+// Marcadores Zonas Recomendadas
+import { locations } from './Data';
+
 //FUNCIÓN: MAPA GOOGLE MAPS
 export function Map({ navigation, route }) {
     const [loading, setLoading] = useState(true);
@@ -28,7 +32,20 @@ export function Map({ navigation, route }) {
     const isAdmin = route.params.isAdmin;
     const [username, setUsername] = useState();
     const [email, setEmail] = useState();
-
+    const state = {
+        coordinates: [
+            { name: '1', latitude: 40.473985, longitude: -3.738114 },
+            { name: '2', latitude: 40.453471, longitude: -3.744472 },
+            { name: '3', latitude: 40.413749, longitude: -3.724002 },
+            { name: '4', latitude: 40.396803, longitude: -3.708909 },
+            { name: '5', latitude: 40.399517, longitude: -3.668575 },
+            { name: '6', latitude: 40.418321, longitude: -3.658993 },
+            { name: '7', latitude: 40.432926, longitude: -3.660747 },
+            { name: '8', latitude: 40.455076, longitude: -3.663402 },
+            { name: '9', latitude: 40.479948, longitude: -3.674229 },
+            { name: '10', latitude: 40.482495, longitude: -3.685906 }
+        ]
+    }
 
     useEffect(() => {
         (async () => {
@@ -109,13 +126,20 @@ export function Map({ navigation, route }) {
                         mapType="standard"
                         showsUserLocation={true}
                     >
-                        {/* <Marker
-                            coordinate={{
-                                latitude: Location.latitude,
-                                longitude: Location.longitude
-                            }}
-                            draggable
-                        /> */}
+                        {
+                            locations.map((marker) => (
+                                <Marker
+                                    coordinate={{
+                                        latitude: marker.latitude,
+                                        longitude: marker.longitude
+                                    }}
+                                    title={marker.title}
+                                />
+                            ))
+                        }
+                        <Polygon
+                            coordinates={state.coordinates}
+                        />
                         {MARKERS_DATA.map((marker) => (
                             <Marker
                                 key={marker.id}
@@ -127,10 +151,10 @@ export function Map({ navigation, route }) {
                                 onPress={() => {
                                     {
                                         marker.libre ?
-                                        (marker.tipo === "bike" ?
-                                            navigation.navigate("BikeInfo", { id: marker.id, tipo: marker.tipo, }) :
-                                            navigation.navigate("PatineteInfo", { id: marker.id, tipo: marker.tipo })
-                                        ) : navigation.navigate("noDisponible")
+                                            (marker.tipo === "bike" ?
+                                                navigation.navigate("BikeInfo", { id: marker.id, tipo: marker.tipo, }) :
+                                                navigation.navigate("PatineteInfo", { id: marker.id, tipo: marker.tipo })
+                                            ) : navigation.navigate("noDisponible")
                                     }
                                 }}
                                 style={styles.marker}
@@ -145,9 +169,11 @@ export function Map({ navigation, route }) {
                                 </View>
                             </Marker>
                         ))}
-                        <TouchableHighlight style={styles.button} onPress={() => navigation.navigate("QR", { user_id: user_id, isAdmin: isAdmin })}>
-                            <Text style={styles.textButton} >Leer QR</Text>
-                        </TouchableHighlight>
+                        <View>
+                            <TouchableHighlight style={styles.button} onPress={() => navigation.navigate("QR", { user_id: user_id, isAdmin: isAdmin })}>
+                                <Text style={styles.textButton} >Leer QR</Text>
+                            </TouchableHighlight>
+                        </View>
                     </MapView>
                 </View>
             );
@@ -182,13 +208,20 @@ export function Map({ navigation, route }) {
                         mapType="standard"
                         showsUserLocation={true}
                     >
-                        {/* <Marker
-                        coordinate={{
-                            latitude: Location.latitude,
-                            longitude: Location.longitude
-                        }}
-                        draggable
-                    /> */}
+                        {
+                            locations.map((marker) => (
+                                <Marker
+                                    coordinate={{
+                                        latitude: marker.latitude,
+                                        longitude: marker.longitude
+                                    }}
+                                    title={marker.title}
+                                />
+                            ))
+                        }
+                        <Polygon
+                            coordinates={state.coordinates}
+                        />
                         {MARKERS_DATA.map((marker) => (
                             <Marker
                                 key={marker.id}
@@ -213,9 +246,11 @@ export function Map({ navigation, route }) {
                                 </View>
                             </Marker>
                         ))}
-                        <TouchableHighlight style={styles.button} onPress={() => navigation.navigate("QR", { user_id: user_id })}>
-                            <Text style={styles.textButton} >Leer QR</Text>
-                        </TouchableHighlight>
+                        <View>
+                            <TouchableHighlight style={styles.button} onPress={() => navigation.navigate("QR", { user_id: user_id })}>
+                                <Text style={styles.textButton} >Leer QR</Text>
+                            </TouchableHighlight>
+                        </View>
                     </MapView>
                 </View>
             );
@@ -302,6 +337,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontFamily: 'AmericanTypewriter-Bold',
         fontSize: 35
+    },
+    marker: {
+        width: 500
     }
 });
 
